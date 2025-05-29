@@ -11,13 +11,11 @@
     <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABFSURBVDhPYxgFo2AUjIJRMDIgBaMWAMGWg40CGGARKIcFFhAFqiBELKwL0RAUEpZSYYAAKUmZASwYGLAESJgRKMIAAGVyBqwSAFXRAAAAAElFTkSuQmCC" type="image/x-icon"/>
     <style>
         body {
-            min-height: 100dvh; /* Prefer dvh for dynamic viewport, but consider fallback */
-            min-height: 100vh; /* Fallback for browsers not fully supporting dvh */
-            font-family: 'Lexend', "Manrope", "Noto Sans", sans-serif;
-            overscroll-behavior-y: contain;
             margin: 0;
-            overflow-y: hidden; /* Allow y-scroll only if explicitly needed by a child */
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow: hidden; /* Prevent scrolling for the main body */
+            height: 100vh; /* Full viewport height */
+            font-family: 'Lexend', "Manrope", "Noto Sans", sans-serif;
+            overscroll-behavior-y: contain; /* Prevent pull-to-refresh */
             position: relative; /* For ensuring fixed elements are relative to body */
         }
 
@@ -25,17 +23,11 @@
             display: none !important;
         }
 
-       .screen-content {
-    height: 100dvh;
-    overflow: hidden; /* scroll'u burada da engelle */
-    padding: 0; /* boşlukları sıfırla */
-    margin: 0;
-}
-
-        /* Adjust padding for screens that sit above the bottom nav */
-        #gameScreen, #resultsScreen, #finishScreen, #howToPlayScreen {
-            /* padding-bottom is now handled dynamically by JS for main content areas */
-            /* This ensures better compatibility with iOS address bar */
+        .screen-content {
+            height: 100dvh;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
         }
 
         /* Adjust main content areas within screens to properly handle height */
@@ -368,11 +360,106 @@
             background-position: center;
             background-size: 30px 30px;
         }
+
+        /* Sponsored Popup Image Aspect Ratio */
+        .sponsored-image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 133.33%; /* 4:3 aspect ratio (height / width * 100%) */
+            overflow: hidden; /* Hide overflow if image isn't exact fit */
+            border: 1px solid #CBD5E0; /* Added border */
+            border-radius: 0.5rem; /* Rounded corners */
+            margin-bottom: 0.75rem; /* Tailwind mb-3 equivalent */
+        }
+
+        .sponsored-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Shrink to fit, show whole image */
+            object-position: center; /* Center the image */
+        }
+
+        /* YENİ SADE YÜKLEME EKRANI STYLES */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* Hoşgeldiniz ekranı arka planı ile aynı renkler */
+            background: linear-gradient(270deg, #d1e4f0, #b8d8e8, #a3c9dc, #e0eaf0, #d1e4f0);
+            background-size: 600% 600%; /* Animasyon için boyut */
+            animation: backgroundMorph 12s ease infinite; /* Başlangıç ekranındaki aynı animasyon */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333333; /* Okunurluk için koyu metin */
+            text-align: center;
+            z-index: 9999; /* Üstte olduğundan emin ol */
+            transition: opacity 0.5s ease-out; /* Kaybolma animasyonu */
+            opacity: 1; /* Başlangıçta görünür */
+        }
+
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none; /* Gizlendiğinde tıklamaları engelle */
+        }
+
+        #loadingScreen .loading-text-main {
+            font-size: 2.2em; /* Daha büyük başlık */
+            font-weight: 700; /* Kalın */
+            font-family: 'Lexend', sans-serif; /* Oyun fontu */
+            margin-bottom: 30px; /* Boşluk */
+            color: #1a1a1a; /* Başlangıç ekranı başlık rengi */
+            animation: pulseSimple 1.5s infinite alternate; /* Nazik nabız animasyonu */
+        }
+
+        @keyframes pulseSimple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.02); opacity: 0.9; }
+        }
+
+        #loadingScreen .loading-bar-wrapper-simple {
+            width: 70%; /* Daha geniş çubuk */
+            max-width: 400px;
+            height: 8px; /* Daha ince çubuk */
+            background-color: rgba(0, 0, 0, 0.1); /* Koyu, hafif şeffaf arka plan */
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Hafif iç gölge */
+        }
+
+        #loadingScreen .loading-bar-simple {
+            height: 100%;
+            /* "Turnuvaya Başla!" butonunun gradyanı */
+            background: linear-gradient(90deg, #76A9FA, #FF6F61);
+            width: 0;
+            border-radius: 4px;
+            transition: width 0.3s ease-out; /* Pürüzsüz ilerleme */
+        }
+
+        /* Ana uygulama konteyneri için geçiş */
+        #appContainer {
+            opacity: 0; /* Başlangıçta görünmez */
+            transition: opacity 0.5s ease-in; /* Yavaşça belirme efekti */
+        }
+        #appContainer.visible {
+            opacity: 1; /* Görünür hale geldiğinde */
+        }
     </style>
 </head>
-<body class="bg-[#FAF8F6]">
+<body>
+    <div id="loadingScreen">
+        <div class="loading-bar-wrapper-simple">
+            <div id="actualLoadingBar" class="loading-bar-simple"></div>
+        </div>
+    </div>
 
-    <div id="appContainer">
+    <div id="appContainer" class="hidden-screen">
         <button id="globalHowToPlayButton" class="hidden-screen fixed top-3 right-3 z-40 text-slate-700 hover:text-blue-600">
             <span class="material-icons-outlined">help_outline</span>
         </button>
@@ -396,7 +483,7 @@
                     <div id="progressBarFill" class="h-full rounded-full bg-[#428aef]" style="width: 0%;"></div>
                 </div>
             </div>
-<div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center">
+            <div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center @md:flex-row @md:justify-center @md:items-center w-full">
                     <div class="card w-full max-w-md @md:max-w-sm bg-white rounded-xl shadow-xl overflow-hidden relative">
                         <div class="confetti-burst hidden"></div>
@@ -458,7 +545,9 @@
                 </button>
                 <div class="p-6 space-y-4">
                     <h2 id="sponsoredPopupTitleText" class="text-xl sm:text-2xl font-bold text-slate-800">Sponsorlu İçerik</h2>
-                    <img id="sponsoredPopupImage" src="" alt="Sponsorlu Reklam" class="w-full h-48 object-contain rounded-md mb-3 border border-slate-200">
+                    <div class="sponsored-image-container">
+                        <img id="sponsoredPopupImage" src="" alt="Sponsorlu Reklam" class="sponsored-image">
+                    </div>
                     <p id="sponsoredPopupDescriptionText" class="text-sm sm:text-base text-slate-600 px-2"></p>
                     <a id="sponsoredPopupLink" href="#" target="_blank" rel="noopener noreferrer" class="inline-block w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors text-base shadow-md hover:shadow-lg">
                         Hemen Keşfet!
@@ -658,6 +747,12 @@
     const stageTransitionTitle = document.getElementById('stageTransitionTitle');
     const stageTransitionMessage = document.getElementById('stageTransitionMessage');
 
+    // NEW LOADING SCREEN ELEMENTS
+    const loadingScreen = document.getElementById('loadingScreen');
+    const appContainer = document.getElementById('appContainer');
+    const actualLoadingBar = document.getElementById('actualLoadingBar');
+
+
     const STAGES = {
         SEEDING: 'Eleme Turu', QUARTERFINALS: 'Çeyrek Final', SEMIFINALS: 'Yarı Final',
         FINAL: 'Final Maçı', RESULTS: 'Sonuçlar', FINISHED: 'Bitti', HOW_TO_PLAY: 'Nasıl Oynanır'
@@ -671,6 +766,9 @@
     let voteCounts = {};
     let champion = null;
     let isSponsoredInterstitialActive = false;
+    let preloadedImageCount = 0;
+    let totalImagesToPreload = 0;
+
 
     const SPONSORED_AD_DETAILS = {
         title: "Artık ikisi de ütopya değil!",
@@ -701,94 +799,113 @@
     // Global cache for preloaded images
     let preloadedImagesCache = {};
 
-    function getImageUrl(imageIdentifier, width = 600, height = 400) {
+    function getImageUrl(imageIdentifier) {
+        // Since imageSeed is always a direct URL in your wishes array,
+        // we can simplify this function.
         if (typeof imageIdentifier === 'string' && imageIdentifier.startsWith('http')) {
             return imageIdentifier;
         }
+        // Fallback for placeholder if for some reason imageIdentifier is not a URL
+        // or for testing with picsum.photos as in previous versions.
         const seed = imageIdentifier || `placeholder_${Math.random().toString(36).substring(7)}`;
-        const url = `https://picsum.photos/seed/${seed}/${width}/${height}`;
-
-        // Return URL directly, preloading handled by preloadImages and setting src handled by loadImageAndSetSrc
-        return url;
+        return `https://picsum.photos/seed/${seed}/600/400`; // Default size for general use
     }
 
-    function preloadImages(imageUrls) {
+    // `onComplete` callback eklendi
+    function preloadImages(imageUrls, onComplete) {
         if (!imageUrls || imageUrls.length === 0) {
+            if (onComplete) onComplete();
             return;
         }
-        imageUrls.forEach(imageUrl => {
-            if (!preloadedImagesCache[imageUrl]) { // Only preload if not already in cache
-                const img = new Image();
-                img.src = imageUrl;
-                img.onload = () => {
-                    preloadedImagesCache[imageUrl] = true; // Mark as loaded
-                    // console.log(`Preloaded: ${imageUrl}`);
-                };
-                img.onerror = () => {
-                    console.warn(`Preload error for: ${imageUrl}`);
-                    preloadedImagesCache[imageUrl] = false; // Mark as failed
-                };
+
+        let loadedCount = 0;
+        totalImagesToPreload = imageUrls.length; // Toplam yüklenecek görsel sayısını güncelle
+
+        // Yükleme çubuğunun başlangıç durumunu ayarlayın
+        if (actualLoadingBar) {
+            actualLoadingBar.style.width = '0%';
+        }
+
+        const checkCompletion = () => {
+            loadedCount++;
+            if (actualLoadingBar) {
+                actualLoadingBar.style.width = `${(loadedCount / totalImagesToPreload) * 100}%`;
             }
+            if (loadedCount === totalImagesToPreload) {
+                // Yükleme çubuğu %100 olduktan sonra callback'i çağırın
+                // Çubuğun animasyonunun bitmesi için kısa bir gecikme ekleyebiliriz
+                setTimeout(() => {
+                    if (onComplete) onComplete();
+                }, 300); // 300ms animasyon süresi için yeterli
+            }
+        };
+
+
+        imageUrls.forEach(imageUrl => {
+            if (preloadedImagesCache[imageUrl] === true) { // Zaten önceden yüklenmişse
+                checkCompletion();
+                return;
+            }
+
+            const img = new Image();
+            img.src = imageUrl;
+            preloadedImagesCache[imageUrl] = 'loading'; // Yükleniyor olarak işaretle
+
+            img.onload = () => {
+                preloadedImagesCache[imageUrl] = true; // Yüklendi olarak işaretle
+                checkCompletion();
+            };
+            img.onerror = () => {
+                console.warn(`Preload error for: ${imageUrl}`);
+                preloadedImagesCache[imageUrl] = false; // Yükleme başarısız oldu olarak işaretle
+                checkCompletion();
+            };
         });
     }
 
     // Function to manage which images to preload based on the current screen
-    function managePreloads(screenId) {
+    // Şimdi bu fonksiyon loading ekranında çağrılacak ve tüm gerekli görselleri ilk başta yükleyecek
+    function managePreloadsInitial() {
         let imagesToLoad = [];
 
-        // Initial load / Start Screen
-        if (screenId === 'start' || screenId === 'onboardingHowToPlayModal') {
-            // Preload images for the first 8 matches (all seeding wishes if total wishes are 16)
-            // Bu, Eleme Turu'ndaki tüm 16 haberin görselini önceden yükler.
-            const initialWishesToPreload = wishes.slice(0, 16); // Varsayılan olarak ilk 16 haberi yükle
-            initialWishesToPreload.forEach(w => {
-                imagesToLoad.push(getImageUrl(w.imageSeed, 600, 400));
-            });
-            // Also preload sponsored ad images if relevant
-            imagesToLoad.push(getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image, 600, 300));
-        }
-        // In-game screen: preload next few matches
-        else if (screenId === 'game') {
-            // Preload next 4 matches (8 images) for smooth transitions
-            const nextMatchesStartIndex = currentMatchInStage * 2 + 2;
-            // Eleme turu için sonraki 4 maçı, diğer turlar için sonraki 2 maçı ön yükle
-            const preloadCount = (currentStage === STAGES.SEEDING) ? 8 : 4; // 4 maç (8 haber) veya 2 maç (4 haber)
-            const nextWishes = wishesForCurrentStage.slice(nextMatchesStartIndex, nextMatchesStartIndex + preloadCount);
+        // Tüm wish görselleri (16 adet)
+        wishes.forEach(w => {
+            imagesToLoad.push(getImageUrl(w.imageSeed));
+        });
 
-            nextWishes.forEach(w => {
-                imagesToLoad.push(getImageUrl(w.imageSeed, 600, 400));
-            });
+        // Sponsorlu reklam görselleri
+        imagesToLoad.push(getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image));
+        const sponsoredCardContent1 = { id: 'sp_card_1', title: "Ne Pişireceğinize Artık Buzdolabımız Karar Verebilecek!", description: "AI destekli buzdolabı, içerikteki malzemelere göre her gün yeni tarif öneriyor.", imageSeed: "https://i.ibb.co/zhQtLZp2/10.png" };
+        const sponsoredCardContent2 = { id: 'sp_card_2', title: "İçindekileri Tanıyan ve Alışveriş Listesi Hazırlayan Buzdolabı duyuruldu! ", description: "Yapay zekâlı buzdolabı, eksikleri algılayıp ihtiyacın olan ürünleri liste halinde bildiriyor.", imageSeed: "https://i.ibb.co/sphC2bqB/8.png" };
+        imagesToLoad.push(getImageUrl(sponsoredCardContent1.imageSeed));
+        imagesToLoad.push(getImageUrl(sponsoredCardContent2.imageSeed));
 
-            // If nearing final stages, preload champion images
-            if (currentStage === STAGES.SEMIFINALS || currentStage === STAGES.FINAL) {
-                imagesToLoad.push(getImageUrl('champion_placeholder_final', 600, 400));
+        // Sonuç ekranı ve "Diğer Popüler Hayaller" için sabit görseller
+        const fixedOtherWishIds = [8, 13, 4, 14];
+        fixedOtherWishIds.forEach(id => {
+            const wish = wishes.find(w => w.id === id);
+            if (wish) { // champion can be null at this point, so no need to filter by champion.id
+                imagesToLoad.push(getImageUrl(wish.imageSeed));
             }
-        }
-        // Results or Finish screen: preload specific results/finish images
-        else if (screenId === 'results' || screenId === 'finish') {
-            if (champion) {
-                imagesToLoad.push(getImageUrl(champion.imageSeed, 600, 400)); // Champion image for results
-            }
-            // Other result cards
-            const fixedOtherWishIds = [8, 13, 4, 14];
-            fixedOtherWishIds.forEach(id => {
-                const wish = wishes.find(w => w.id === id);
-                if (wish && (!champion || wish.id !== champion.id)) {
-                    imagesToLoad.push(getImageUrl(wish.imageSeed, 600, 300));
-                }
-            });
-            // "More Dreams" images
-            const otherDreams = [...wishes].filter(w => w.id !== (champion ? champion.id : null));
-            shuffleArray(otherDreams);
-            for (let i = 0; i < Math.min(3, otherDreams.length); i++) {
-                imagesToLoad.push(getImageUrl(otherDreams[i].imageSeed, 400, 225));
-            }
-        }
+        });
 
-        // Clean up duplicates and start preloading
-        imagesToLoad = [...new Set(imagesToLoad)];
-        preloadImages(imagesToLoad);
+        imagesToLoad = [...new Set(imagesToLoad)]; // Tekrarları kaldır
+
+        // Preload tamamlandığında loading ekranını gizle ve uygulamayı başlat
+        preloadImages(imagesToLoad, () => {
+            // Yükleme çubuğu animasyonu bittikten sonra loading ekranını gizle
+            loadingScreen.classList.add('hidden');
+            // Ana uygulama konteynerini yavaşça görünür yap
+            appContainer.classList.remove('hidden-screen');
+            appContainer.classList.add('visible'); // opacity geçişini tetikler
+
+            // Geçiş tamamlandıktan sonra body'nin overflow'unu yönetebiliriz
+            setTimeout(() => {
+                updateBottomNav(); // Navigasyonu ilk kez güncelle
+            }, 500); // appContainer'ın opacity geçişi süresi kadar bekle
+        });
     }
+
 
     // Function to load image and set src, handles blank until loaded and error states
     function loadImageAndSetSrc(imgElement, imageUrl, altText, errorPlaceholderUrl = null) {
@@ -838,11 +955,11 @@
         if(navResultsButton) navResultsButton.classList.remove('active', 'text-blue-600');
 
         const isOverlayActive = (onboardingModal && !onboardingModal.classList.contains('hidden-screen')) ||
-                                 (screens.winnerPopup && !screens.winnerPopup.classList.contains('hidden-screen')) ||
-                                 (screens.sponsoredPopup && !screens.sponsoredPopup.classList.contains('hidden-screen')) ||
-                                 (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen'));
+                               (screens.winnerPopup && !screens.winnerPopup.classList.contains('hidden-screen')) ||
+                               (screens.sponsoredPopup && !screens.sponsoredPopup.classList.contains('hidden-screen')) ||
+                               (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen'));
 
-        const navHeightWithSpace = '70px'; // Approx height of bottom nav + some buffer
+        const navHeightWithSpace = '70px'; /* Approx height of bottom nav + some buffer */
         const screensThatNeedNavPadding = ['game', 'results', 'finish', 'howToPlay'];
 
         // Reset padding for all screens' main content areas
@@ -925,14 +1042,14 @@
         else if (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen')) activeModal = { el: stageTransitionModal, content: stageTransitionModalContent, backdrop: stageTransitionModalBackdrop };
 
         const displayActualScreen = () => {
-            if (screenIdToShow === 'onboardingModal') { showModal(onboardingModal, onboardingModalContent, onboardingModalBackdrop); managePreloads(screenIdToShow); return; }
-            if (screenIdToShow === 'winnerPopup') { displayWinnerPopupContent(); showModal(screens.winnerPopup, winnerPopupContentContainer); managePreloads(screenIdToShow); return; }
+            if (screenIdToShow === 'onboardingModal') { showModal(onboardingModal, onboardingModalContent, onboardingModalBackdrop); return; }
+            if (screenIdToShow === 'winnerPopup') { displayWinnerPopupContent(); showModal(screens.winnerPopup, winnerPopupContentContainer); return; }
             if (screenIdToShow === 'sponsoredPopup') {
                 if(sponsoredPopupTitleText) sponsoredPopupTitleText.textContent = SPONSORED_AD_DETAILS.title;
                 if(document.getElementById('sponsoredPopupImage')) loadImageAndSetSrc(document.getElementById('sponsoredPopupImage'), getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image), "Sponsorlu Reklam");
                 if(sponsoredPopupDescriptionText) sponsoredPopupDescriptionText.textContent = SPONSORED_AD_DETAILS.description;
                 if(sponsoredPopupLink) sponsoredPopupLink.href = SPONSORED_AD_DETAILS.link;
-                showModal(screens.sponsoredPopup, sponsoredPopupContent); managePreloads(screenIdToShow); return;
+                showModal(screens.sponsoredPopup, sponsoredPopupContent); return;
             }
             if (!screens[screenIdToShow]) { console.error("Ekran bulunamadı:", screenIdToShow); return; }
 
@@ -969,7 +1086,7 @@
             }
             updateBottomNav();
             window.scrollTo(0,0);
-            managePreloads(screenIdToShow); // Ekran değiştiğinde preloadları yönet
+            // No need to manage preloads here, as initial preload is done
         };
         if (activeModal && activeModal.el.id !== (screens[screenIdToShow] ? screens[screenIdToShow].id : screenIdToShow) ) {
             hideModal(activeModal.el, activeModal.content, activeModal.backdrop, displayActualScreen);
@@ -1024,7 +1141,6 @@
         if (card2TitleEl) card2TitleEl.textContent = sponsoredCardContent2.title;
         if (card2DescEl) card2DescEl.textContent = sponsoredCardContent2.description;
         loadImageAndSetSrc(card2ImgEl, getImageUrl(sponsoredCardContent2.imageSeed), sponsoredCardContent2.title);
-        gameScreenCards[1].dataset.wishId = sponsoredCardContent2.id;
         
         if (vsButtonSpan) { vsButtonSpan.classList.remove('vs-animate'); void vsButtonSpan.offsetWidth; vsButtonSpan.classList.add('vs-animate'); }
         gameScreenCards.forEach(c => { c.classList.remove('selected', 'not-selected'); c.style.pointerEvents = 'auto'; c.querySelector('.confetti-burst')?.classList.add('hidden'); c.style.visibility = 'visible';});
@@ -1131,7 +1247,6 @@
             c.querySelector('.confetti-burst')?.classList.add('hidden');
             c.style.visibility = 'visible'; // Make cards visible after new content is loaded
         });
-        managePreloads('game'); // Preload next images while playing current match
     }
 
 
@@ -1222,14 +1337,14 @@
     function displayWinnerPopupContent() {
         if (!champion) {
             console.warn("Şampiyon popup için şampiyon belirlenmedi. Fallback.");
-            // Try to find a champion if not explicitly set (e.g., direct navigation to results)
+            // Try to find a champion from vote counts if not explicitly set
             const sortedByVotes = Object.keys(voteCounts).sort((a,b) => voteCounts[b] - voteCounts[a]);
             if (sortedByVotes.length > 0) champion = wishes.find(w => w.id == sortedByVotes[0]);
             else if (wishes.length > 0) champion = wishes[0]; // Fallback to first available wish
             else {
                 if(winnerPopupTitle) winnerPopupTitle.textContent = "Hata!";
                 if(winnerPopupDescription) winnerPopupDescription.textContent = "Şampiyon bulunamadı.";
-                loadImageAndSetSrc(winnerPopupImage, getImageUrl('error_placeholder_results', 600, 400), "Error");
+                loadImageAndSetSrc(winnerPopupImage, getImageUrl('error_placeholder_results'), "Error");
                 return;
             }
         }
@@ -1253,7 +1368,7 @@
 
         if(championTitleResults) championTitleResults.textContent = champion.title;
         if(championInfoResults) championInfoResults.textContent = `Başlangıç oylarının %${championPercentage}'i ile şampiyon oldu!`;
-        loadImageAndSetSrc(championImageResults, getImageUrl(champion.imageSeed, 600, 400), champion.title);
+        loadImageAndSetSrc(championImageResults, getImageUrl(champion.imageSeed), champion.title);
 
         if(resultsCardContainer && championCardDisplay) {
             resultsCardContainer.innerHTML = ''; // Clear previous results
@@ -1270,7 +1385,7 @@
             otherWishesToDisplay.slice(0, 3).forEach(w => { // Show up to 3 other wishes
                 if (!w || typeof w.voteCount === 'undefined') return;
                 const wishPercentage = totalSeedingVotes > 0 ? ((w.voteCount / totalSeedingVotes) * 100).toFixed(1) : "0.0";
-                const otherImageUrl = getImageUrl(w.imageSeed, 600, 300);
+                const otherImageUrl = getImageUrl(w.imageSeed);
 
                 const div = document.createElement('div');
                 div.className = "bg-white shadow-lg rounded-2xl overflow-hidden mt-4";
@@ -1316,7 +1431,7 @@
             for(let i=0; i<Math.min(3, otherWishes.length); i++){
                 const d=otherWishes[i];
                 if(!d || !d.title) continue;
-                const moreDreamImageUrl = getImageUrl(d.imageSeed, 400, 225);
+                const moreDreamImageUrl = getImageUrl(d.imageSeed);
 
                 const div = document.createElement('div');
                 div.className = "flex flex-col gap-3 rounded-xl min-w-[280px] max-w-[280px] bg-white shadow-lg p-4";
@@ -1402,11 +1517,11 @@
         e.preventDefault();
         // Determine if we should resume current game or start new one
         const isGameRelatedScreen = currentScreenId === 'game' ||
-                                     (screens[previousScreenId]?.id === 'gameScreen' &&
-                                      (currentScreenId === 'howToPlay' ||
-                                       currentScreenId === 'stageTransitionModal' ||
-                                       currentScreenId === 'winnerPopupScreen' ||
-                                       currentScreenId === 'sponsoredPopupScreen'));
+                                    (screens[previousScreenId]?.id === 'gameScreen' &&
+                                     (currentScreenId === 'howToPlay' ||
+                                      currentScreenId === 'stageTransitionModal' ||
+                                      currentScreenId === 'winnerPopupScreen' ||
+                                      currentScreenId === 'sponsoredPopupScreen'));
 
         if (isGameRelatedScreen && !champion) { // If game is active or was paused, and not finished
             showScreen('game');
@@ -1421,9 +1536,12 @@
 
     // Initial setup on page load
     document.addEventListener('DOMContentLoaded', () => {
-        // Uygulama başladığında, ilk görünecek ekranın ve ilk maçın görsellerini ön yükle
-        managePreloads('start'); // Başlangıç ekranında gerekli preloadları başlat
-        updateBottomNav(); // Initial navigation visibility and padding update
+        // Uygulama başladığında, tüm görselleri preload et
+        managePreloadsInitial();
+        // İlk başta appContainer gizli kalsın, loading ekranı görünsün
+        appContainer.classList.add('hidden-screen');
+        loadingScreen.classList.remove('hidden');
+        updateBottomNav(); // İlk navigasyon görünürlüğünü ve padding'i güncelle
     });
 
     // Update navigation visibility and padding on window resize
