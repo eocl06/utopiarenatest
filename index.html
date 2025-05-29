@@ -467,11 +467,14 @@
         <div id="startScreen" class="screen-content relative flex h-screen flex-col justify-center items-center group/design-root px-4 pt-6 pb-2 sm:pt-10 sm:pb-4 background-animate">
             <div class="flex flex-col items-center justify-center min-h-0 z-10 text-center mb-10 sm:mb-12">
                 <h1 class="text-[#1a1a1a] tracking-tight text-[36px] sm:text-[52px] font-bold leading-tight pt-0 pb-1 sm:pb-2">UtopiArena</h1>
-                <p class="text-[#333333] text-base sm:text-lg font-normal leading-relaxed pb-3 sm:pb-4 max-w-md">Gerçek olmasını en çok istediğin haberi seç. Keşke değil, "Belki bir gün!" diyerek en çok neyi istediğimizi birlikte görelim.</p>
+                <p class="text-[#333333] text-base sm:text-lg font-normal leading-relaxed pb-3 sm:pb-4 max-w-md">
+                    Bir haberi gerçek kılabilsen, hangisi olsun isterdin?<br />
+                    Tüm Bundle kullanıcılarının seçimleriyle, Türkiye’nin en çok beklediği haberi birlikte belirliyoruz.
+                </p>
             </div>
             <div class="w-full flex justify-center z-10 pb-0">
                 <button id="startGameButton" class="start-button flex w-auto min-w-[180px] max-w-[320px] px-6 sm:px-8 h-12 sm:h-14 text-md sm:text-lg font-bold rounded-full shadow-lg items-center justify-center">
-                    <span class="truncate">Turnuvaya Başla!</span>
+                    <span class="truncate">Oyuna Başla!</span>
                 </button>
             </div>
         </div>
@@ -520,7 +523,7 @@
                 <div class="p-6 space-y-4">
                     <div class="mb-1"><span class="material-icons text-yellow-400 text-5xl sm:text-6xl">emoji_events</span></div>
                     <h2 class="text-2xl sm:text-3xl font-bold text-yellow-400">Senin Dileğin:</h2>
-                    <p id="winnerPopupSubtitle" class="text-sm sm:text-base text-gray-300 px-2">UtopiArena'da senin gelecek için en çok dilediğin haber bu oldu:</p>
+                    <p id="winnerPopupSubtitle" class="text-sm sm:text-base text-gray-300 px-2">Senin gelecek için en çok dilediğin haber bu oldu:</p>
                     <div class="bg-gray-700 rounded-lg p-3 sm:p-4 border border-gray-600 shadow-md">
                         <img id="winnerPopupImage" src="" alt="Şampiyon Dilek" class="w-full image-h-winner-popup object-cover rounded-md mb-3 shadow-sm">
                         <h3 id="winnerPopupTitle" class="text-lg sm:text-xl font-semibold text-white mb-1"></h3>
@@ -528,7 +531,7 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
                         <button id="winnerShareButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors text-sm sm:text-base flex items-center justify-center gap-2 shadow hover:shadow-md">
-                            <span class="material-icons-outlined text-base">share</span> Şampiyonu Paylaş
+                            <span class="material-icons-outlined text-base">share</span> Paylaş
                         </button>
                         <button id="winnerToResultsButton" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2.5 px-4 rounded-lg transition-colors text-sm sm:text-base shadow hover:shadow-md">
                             Sonuçları Keşfet
@@ -566,7 +569,8 @@
                     </div>
                 </header>
                 <main class="pb-4 overflow-y-auto flex-1 min-h-0">
-                    <h2 class="text-slate-800 text-2xl font-semibold leading-tight px-6 text-center pb-6 pt-5">Ve şampiyon dilek...</h2>
+                    <h2 class="text-slate-800 text-2xl font-semibold leading-tight px-6 text-center pb-6 pt-5">Türkiye’nin Gelecek Hayali!
+                    </h2>
                     <div id="resultsCardContainer" class="px-4 space-y-4">
                         <div id="championCardDisplay" class="bg-white shadow-xl rounded-2xl overflow-hidden border-2 border-yellow-400 transform scale-105">
                             <div class="relative">
@@ -598,13 +602,13 @@
                     </div>
                     <div class="flex flex-col gap-3 px-6 py-4">
                         <button id="shareChampionButton" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 flex-1 bg-[#428aef] text-slate-50 text-lg font-bold shadow-md hover:shadow-lg">
-                            <span class="material-icons mr-2">share</span> <span class="truncate">Şampiyonu Paylaş</span>
+                            <span class="material-icons mr-2">share</span> <span class="truncate"> Paylaş</span>
                         </button>
                         <button id="finishPlayAgainButton" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 flex-1 bg-slate-200 text-[#0d131b] text-lg font-bold hover:bg-slate-300">
                             <span class="material-icons mr-2">replay</span> <span class="truncate">Yeni Turnuva Başlat</span>
                         </button>
                     </div>
-                    <div class="px-6 pt-8 pb-4"><h2 class="text-[#0d131b] text-2xl font-bold leading-tight">Diğer Popüler Hayaller...</h2></div>
+                    <div class="px-6 pt-8 pb-4"><h2 class="text-[#0d131b] text-2xl font-bold leading-tight">Türkiye’nin dilekleri...</h2></div>
                     <div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pl-6 pr-2 pb-6">
                         <div id="moreDreamsContainer" class="flex items-stretch gap-4"></div>
                     </div>
@@ -625,10 +629,10 @@
                 <main class="p-4 space-y-4 text-slate-700 overflow-y-auto flex-1 min-h-0">
                     <p class="text-lg">UtopiArena'ya hoş geldiniz!</p>
                     <ol class="list-decimal list-inside space-y-2">
-                        <li>Sana sunulan iki hayali haberden birini seç. Gerçek olmasını en çok istediğini oyla.</li>
-                        <li>Seçimlerinizle dileğiniz olan haberler turnuvada ilerleyecek:
-                        <li>Oyun sonunda sizin gelecek için dileğinizi ve ülkenin en çok beklediği haberleri görebilirsiniz.</li>
-                        <li>Sağ üstteki <span class="material-icons-outlined text-sm">help_outline</span> ikonundan bu ekrana tekrar ulaşabilirsiniz (oyun sırasında).</li>
+                        <li>Karşına çıkacak iki haberden, gerçekleşmesini en çok istediğini seç ve bir üst tura taşı.</li>
+                        <li>Finale kadar ilerle ve Türkiye’nin en çok beklenen haberini birlikte belirleyelim!
+                        <li>Oyun sonunda gelecek için dileğini ve ülkenin en çok beklediği haberleri görebilirsin.</li>
+                        <li>Oyun sırasında sağ üstteki <span class="material-icons-outlined text-sm">help_outline</span> ikonundan bu ekrana tekrar ulaşabilirsin.</li>
                         <li>İyi eğlenceler!</li>
                     </ol>
                     <p class="text-sm text-slate-500 mt-8 border-t border-slate-300 pt-4">
@@ -640,27 +644,41 @@
 
         <div id="onboardingHowToPlayModal" class="hidden-screen fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay opacity-0">
             <div id="onboardingModalBackdrop" class="fixed inset-0 transition-opacity duration-300 ease-out opacity-0 bg-slate-900/70 backdrop-blur-sm"></div>
-            <div id="onboardingModalContent" class="modal-content-box bg-slate-50 rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative z-10">
-                <header class="p-4 border-b border-slate-200"><h2 class="text-xl sm:text-2xl font-bold text-slate-800 text-center">UtopiArena'ya Hoş Geldin!</h2></header>
-                <main id="onboardingHowToPlayContent" class="p-5 sm:p-6 space-y-3 text-slate-700 max-h-[60vh] sm:max-h-[65vh] overflow-y-auto">
-                    <p class="text-base sm:text-lg font-semibold text-center text-blue-600">Gerçek olmasını istediğin habere oy ver!</p>
-                    <ol class="list-none space-y-2 text-sm sm:text-base">
-                        <li class="flex items-start"><span class="material-icons-outlined text-blue-500 mr-2 mt-0.5">looks_one</span><span>Sana sunulan iki "gelecek senaryosu" arasından <strong class="text-slate-700">favorini seç</strong>.</span></li>
-                        <li class="flex items-start"><span class="material-icons-outlined text-blue-500 mr-2 mt-0.5">emoji_events</span><span>Seçimlerinle senaryolar turnuvada ilerlesin ve bir <strong class="text-yellow-500">şampiyon</strong> belirlensin!</span></li>
-                        <li class="flex items-start"><span class="material-icons-outlined text-blue-500 mr-2 mt-0.5">settings_ethernet</span><span>Eleme, Çeyrek Final, Yarı Final ve Final aşamalarından geç.</span></li>
-                        <li class="flex items-start"><span class="material-icons-outlined text-green-500 mr-2 mt-0.5">flag</span><span>En iyi geleceği seçerek <strong class="text-slate-700">ülkemizin hayalini</strong> şekillendir!</span></li>
+            <div id="onboardingModalContent" class="modal-content-box bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative z-10">
+
+                <header class="p-5 border-b border-slate-200">
+                    <h2 class="text-xl sm:text-2xl font-bold text-center text-slate-800">UtopiArena'ya Hoş Geldin</h2>
+                </header>
+
+                <main id="onboardingHowToPlayContent" class="p-6 space-y-4 text-slate-800 text-sm sm:text-base leading-relaxed max-h-[60vh] sm:max-h-[65vh] overflow-y-auto">
+                    <ol class="space-y-3 list-decimal list-inside">
+                        <li>
+                            Karşına çıkacak iki haberden, gerçekleşmesini en çok istediğini seç ve bir üst tura taşı.
+                        </li>
+                        <li>
+                            Finale kadar ilerle ve Türkiye’nin en çok beklenen haberini birlikte belirleyelim.
+                        </li>
+                        <li>
+                            Oyun sonunda gelecek için dileğini ve ülkenin en çok beklediği haberleri görebilirsin.
+                        </li>
+                        <li>
+                            Oyun sırasında sağ üstteki <strong>?</strong> ikonuna tıklayarak bu ekrana tekrar ulaşabilirsin.
+                        </li>
+                        <li>
+                            <span class="text-blue-600 font-semibold">İyi eğlenceler.</span>
+                        </li>
                     </ol>
-                    <p class="text-xs text-slate-500 mt-4 border-t border-slate-300 pt-3">
-                        <strong>Not:</strong> Oyundaki tüm senaryolar tamamen hayal ürünüdür. Daha detaylı "Nasıl Oynanır" bilgisine oyun içindeki <span class="material-icons-outlined text-xs align-bottom">help_outline</span> ikonundan her zaman ulaşabilirsin.
-                    </p>
                 </main>
-                <footer class="p-4 bg-slate-100 border-t border-slate-200 text-center">
-                    <button id="proceedFromOnboardingButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-base sm:text-lg shadow-md hover:shadow-lg">
-                        Anladım, Oyuna Başla!
+
+                <footer class="p-5 bg-slate-100 border-t border-slate-200 text-center">
+                    <button id="proceedFromOnboardingButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors text-sm sm:text-base shadow">
+                        Anladım, Oyuna Başla
                     </button>
                 </footer>
+
             </div>
         </div>
+
 
         <div id="stageTransitionModal" class="hidden-screen fixed inset-0 z-[150] flex items-center justify-center p-4 modal-overlay opacity-0">
             <div id="stageTransitionModalBackdrop" class="fixed inset-0 transition-opacity duration-300 ease-out opacity-0 bg-slate-900/75 backdrop-blur-md"></div>
@@ -758,7 +776,7 @@
         FINAL: 'Final Maçı', RESULTS: 'Sonuçlar', FINISHED: 'Bitti', HOW_TO_PLAY: 'Nasıl Oynanır'
     };
     let currentScreenId = 'start'; // Uses keys from 'screens' object, e.g., 'start', 'game', 'howToPlay'
-    let previousScreenId = 'start';
+    let previousScreenId = 'start'; // Stores the ID of the last *main* screen visited
     let currentStage = STAGES.SEEDING;
     let currentMatchInStage = 0;
     let wishesForCurrentStage = [];
@@ -809,7 +827,6 @@
             return imageIdentifier;
         }
         // Fallback for placeholder if for some reason imageIdentifier is not a URL
-        // or for testing with picsum.photos as in previous versions.
         const seed = imageIdentifier || `placeholder_${Math.random().toString(36).substring(7)}`;
         return `https://picsum.photos/seed/${seed}/600/400`; // Default size for general use
     }
@@ -912,10 +929,10 @@
 
 
     // Function to load image and set src, handles blank until loaded and error states
-    function loadImageAndSetSrc(imgElement, imageUrl, altText, errorPlaceholderUrl = null) {
+    function loadImageAndSetSrc(imgElement, imageUrl, altText, errorPlaceholderUrl = 'https://via.placeholder.com/600x400?text=Görsel+Yüklenemedi') {
         if (!imgElement) return;
 
-        // Görsel yüklenirken bir yükleniyor sınıfı ekleyin
+        // Add a loading class while the image loads
         imgElement.classList.add('image-loading');
         imgElement.src = ''; // Clear existing src to prevent old image from showing
         imgElement.alt = altText || '';
@@ -926,7 +943,7 @@
             imgElement.alt = altText;
             imgElement.classList.remove('image-loading'); // Remove spinner once loaded
         } else if (preloadedImagesCache[imageUrl] === false) { // Previously failed to load
-            imgElement.src = errorPlaceholderUrl || 'https://via.placeholder.com/600x400?text=Görsel+Yüklenemedi'; // Use a generic error placeholder
+            imgElement.src = errorPlaceholderUrl; // Use a generic error placeholder
             imgElement.alt = "Görsel yüklenemedi.";
             imgElement.classList.remove('image-loading'); // Remove spinner
         } else {
@@ -942,7 +959,7 @@
             };
             img.onerror = () => {
                 console.warn(`Failed to load image: ${imageUrl}`);
-                imgElement.src = errorPlaceholderUrl || 'https://via.placeholder.com/600x400?text=Görsel+Yüklenemedi'; // Use a generic error placeholder
+                imgElement.src = errorPlaceholderUrl; // Use a generic error placeholder
                 imgElement.alt = "Görsel yüklenemedi.";
                 imgElement.classList.remove('image-loading'); // Remove spinner on error
                 preloadedImagesCache[imageUrl] = false;
@@ -954,6 +971,7 @@
     function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
 
     function updateBottomNav() {
+        // Reset all nav buttons to inactive state first
         if(navHomeButton) navHomeButton.classList.remove('active', 'text-blue-600');
         if(navPlayButton) navPlayButton.classList.remove('active', 'text-blue-600');
         if(navResultsButton) navResultsButton.classList.remove('active', 'text-blue-600');
@@ -977,12 +995,13 @@
         });
 
         if (currentScreenId === 'start' || isOverlayActive) {
-            if (navHomeButton) navHomeButton.classList.add('active', 'text-blue-600');
             if (bottomNav) bottomNav.classList.add('hidden-screen');
             if (globalHowToPlayButton) globalHowToPlayButton.classList.add('hidden-screen');
+            if (currentScreenId === 'start' && navHomeButton) navHomeButton.classList.add('active', 'text-blue-600');
         } else {
             if (bottomNav) bottomNav.classList.remove('hidden-screen');
 
+            // Global "How to Play" button is visible on game, results, finish screens, but not on itself or modals
             if (globalHowToPlayButton) {
                 globalHowToPlayButton.classList[currentScreenId !== 'howToPlay' ? 'remove' : 'add']('hidden-screen');
             }
@@ -1000,25 +1019,41 @@
 
             if (currentScreenId === 'game' && navPlayButton) navPlayButton.classList.add('active', 'text-blue-600');
             else if ((currentScreenId === 'results' || currentScreenId === 'finish') && navResultsButton) navResultsButton.classList.add('active', 'text-blue-600');
-            else if (navHomeButton && !isOverlayActive && !screensThatNeedNavPadding.includes(currentScreenId) && currentScreenId !== 'howToPlay') navHomeButton.classList.add('active', 'text-blue-600');
+            // 'start' screen already handled as it hides bottomNav.
+            // 'howToPlay' should activate the home button if shown via global button
+            else if (currentScreenId === 'howToPlay' && navHomeButton) navHomeButton.classList.add('active', 'text-blue-600');
+            else if (navHomeButton) navHomeButton.classList.add('active', 'text-blue-600'); // Default to home if somehow not covered
         }
     }
+
 
     function showModal(modalElement, modalContentElement, backdropElement = null) {
         if (!modalElement || !modalContentElement) return;
 
+        // Hide main content screens when a modal is active
+        Object.values(screens).forEach(screen => {
+            if (screen && !screen.classList.contains('hidden-screen') && screen.id !== modalElement.id) {
+                screen.classList.add('hidden-screen');
+            }
+        });
+
         document.body.style.overflow = 'hidden'; // Disable body scroll when modal is active
 
-        let tempPreviousScreenId = currentScreenId;
         modalElement.classList.remove('hidden-screen', 'opacity-0');
         modalElement.classList.add('flex', 'active', 'opacity-100');
         if (backdropElement) { backdropElement.classList.remove('opacity-0'); backdropElement.classList.add('opacity-100'); }
-        currentScreenId = modalElement.id;
-        updateBottomNav();
-        // Only store previous screen if it's not another modal
-        if (!['onboardingHowToPlayModal', 'stageTransitionModal', 'winnerPopupScreen', 'sponsoredPopupScreen'].includes(tempPreviousScreenId)) {
-            previousScreenId = tempPreviousScreenId;
+
+        // Store the actual screen that was active *before* the modal was shown
+        // This makes sure we return to the correct main screen, not another modal.
+        const currentlyVisibleScreen = Object.values(screens).find(s => s && !s.classList.contains('hidden-screen') && !s.id.includes('Popup') && s.id !== 'stageTransitionModal' && s.id !== 'onboardingHowToPlayModal');
+        if (currentlyVisibleScreen && currentlyVisibleScreen.id !== modalElement.id) {
+            previousScreenId = currentlyVisibleScreen.id;
+        } else if (!previousScreenId) { // Fallback if no specific screen was visible
+            previousScreenId = 'start';
         }
+
+        currentScreenId = modalElement.id; // Set current screen to modal's ID
+        updateBottomNav();
     }
 
     function hideModal(modalElement, modalContentElement, backdropElement = null, callback) {
@@ -1027,77 +1062,97 @@
         modalElement.classList.remove('active', 'opacity-100');
         modalElement.classList.add('opacity-0');
         if (backdropElement) { backdropElement.classList.remove('opacity-100'); backdropElement.classList.add('opacity-0'); }
+
         setTimeout(() => {
             modalElement.classList.add('hidden-screen');
             modalElement.classList.remove('flex');
-            if (currentScreenId === modalElement.id) currentScreenId = previousScreenId || 'start'; // Revert to previous non-modal screen
+
+            currentScreenId = previousScreenId; // Revert to the stored previous main screen
+            showScreen(currentScreenId); // Explicitly show the screen we are returning to
+
             document.body.style.overflow = 'hidden'; // Keep body overflow hidden as per game design for screens
-            updateBottomNav();
+            updateBottomNav(); // Update navigation after the screen is revealed
             if (callback) callback();
         }, 300);
     }
 
     // showScreen fonksiyonu preloadları başlatacak şekilde güncelleniyor
     function showScreen(screenIdToShow) {
-        let activeModal = null;
-        if (onboardingModal && !onboardingModal.classList.contains('hidden-screen')) activeModal = { el: onboardingModal, content: onboardingModalContent, backdrop: onboardingModalBackdrop };
-        else if (screens.winnerPopup && !screens.winnerPopup.classList.contains('hidden-screen')) activeModal = { el: screens.winnerPopup, content: winnerPopupContentContainer, backdrop: null };
-        else if (screens.sponsoredPopup && !screens.sponsoredPopup.classList.contains('hidden-screen')) activeModal = { el: screens.sponsoredPopup, content: sponsoredPopupContent, backdrop: null };
-        else if (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen')) activeModal = { el: stageTransitionModal, content: stageTransitionModalContent, backdrop: stageTransitionModalBackdrop };
+        // First, check if the requested screen is already active or is a modal.
+        if (currentScreenId === screenIdToShow) {
+            updateBottomNav(); // Ensure nav is correct for current state
+            return;
+        }
+
+        // Determine if any modal is currently active
+        const activeModalElement = Object.values(screens).find(screen =>
+            screen && !screen.classList.contains('hidden-screen') &&
+            (screen.id.includes('Modal') || screen.id.includes('Popup'))
+        );
 
         const displayActualScreen = () => {
+            // Specific handling for modals
             if (screenIdToShow === 'onboardingModal') { showModal(onboardingModal, onboardingModalContent, onboardingModalBackdrop); return; }
             if (screenIdToShow === 'winnerPopup') { displayWinnerPopupContent(); showModal(screens.winnerPopup, winnerPopupContentContainer); return; }
             if (screenIdToShow === 'sponsoredPopup') {
                 if(sponsoredPopupTitleText) sponsoredPopupTitleText.textContent = SPONSORED_AD_DETAILS.title;
-                if(document.getElementById('sponsoredPopupImage')) loadImageAndSetSrc(document.getElementById('sponsoredPopupImage'), getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image), "Sponsorlu Reklam");
+                if(sponsoredPopupImage) loadImageAndSetSrc(sponsoredPopupImage, getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image), "Sponsorlu Reklam");
                 if(sponsoredPopupDescriptionText) sponsoredPopupDescriptionText.textContent = SPONSORED_AD_DETAILS.description;
                 if(sponsoredPopupLink) sponsoredPopupLink.href = SPONSORED_AD_DETAILS.link;
                 showModal(screens.sponsoredPopup, sponsoredPopupContent); return;
             }
             if (!screens[screenIdToShow]) { console.error("Ekran bulunamadı:", screenIdToShow); return; }
 
-            if (currentScreenId !== screenIdToShow && screens[currentScreenId] && !['onboardingHowToPlayModal', 'stageTransitionModal', 'winnerPopupScreen', 'sponsoredPopupScreen'].includes(screens[currentScreenId].id)) {
+            // If we are navigating to a *main* screen, update previousScreenId if it's not a modal
+            // This is crucial for 'How to Play' button logic to return to the correct previous main screen.
+            if (!screenIdToShow.includes('Modal') && !screenIdToShow.includes('Popup')) {
                 previousScreenId = currentScreenId;
             }
 
-            Object.values(screens).forEach(screen => { if(screen && screen.id !== screens[screenIdToShow].id) screen.classList.add('hidden-screen'); });
-            screens[screenIdToShow].classList.remove('hidden-screen');
-            currentScreenId = screenIdToShow;
-
-            const bodyClassList = document.body.classList;
-            if (screens.game) screens.game.classList.remove('final-match-theme', 'sponsored-round-theme');
-            bodyClassList.remove('background-animate', 'bg-[#FAF8F6]', 'bg-slate-50', 'bg-slate-100', 'bg-[#F0F4F8]', 'bg-slate-800');
-
-            if (screenIdToShow === 'start') bodyClassList.add('background-animate', 'bg-[#FAF8F6]');
-            else if (screens[screenIdToShow]) {
-                if (screenIdToShow === 'game') {
-                    if (currentStage === STAGES.FINAL) {
-                        screens.game.classList.add('final-match-theme');
-                        bodyClassList.add('bg-slate-800');
-                    } else if (isSponsoredInterstitialActive) {
-                        screens.game.classList.add('sponsored-round-theme');
-                        bodyClassList.add('bg-[#F0F4F8]');
-                    } else {
-                        bodyClassList.add('bg-slate-50');
-                    }
-                } else {
-                    let screenBg = 'bg-slate-50';
-                    if (screens[screenIdToShow].classList.contains('bg-[#FAF8F6]')) screenBg = 'bg-[#FAF8F6]';
-                    else if (screens[screenIdToShow].classList.contains('bg-slate-50')) screenBg = 'bg-slate-50';
-                    bodyClassList.add(screenBg);
+            // Hide all other screens before showing the target screen
+            Object.values(screens).forEach(screen => {
+                if(screen && screen.id !== screens[screenIdToShow].id) {
+                    screen.classList.add('hidden-screen');
                 }
+            });
+            screens[screenIdToShow].classList.remove('hidden-screen');
+            currentScreenId = screenIdToShow; // Update currentScreenId to the newly shown screen
+
+            // Update body classes and styles based on the active screen
+            const bodyClassList = document.body.classList;
+            bodyClassList.remove('background-animate', 'bg-[#FAF8F6]', 'bg-slate-50', 'bg-slate-100', 'bg-[#F0F4F8]', 'bg-slate-800');
+            if (screens.game) screens.game.classList.remove('final-match-theme', 'sponsored-round-theme'); // Clear game-specific themes
+
+            if (screenIdToShow === 'start') {
+                bodyClassList.add('background-animate', 'bg-[#FAF8F6]');
+            } else if (screenIdToShow === 'game') {
+                if (currentStage === STAGES.FINAL) {
+                    screens.game.classList.add('final-match-theme');
+                    bodyClassList.add('bg-slate-800');
+                } else if (isSponsoredInterstitialActive) {
+                    screens.game.classList.add('sponsored-round-theme');
+                    bodyClassList.add('bg-[#F0F4F8]');
+                } else {
+                    bodyClassList.add('bg-slate-50');
+                }
+            } else { // For results, finish, howToPlay screens
+                bodyClassList.add('bg-slate-50'); // Default background for these screens
             }
-            updateBottomNav();
+            updateBottomNav(); // Update navigation after screen is visible
             window.scrollTo(0,0);
-            // No need to manage preloads here, as initial preload is done
         };
-        if (activeModal && activeModal.el.id !== (screens[screenIdToShow] ? screens[screenIdToShow].id : screenIdToShow) ) {
-            hideModal(activeModal.el, activeModal.content, activeModal.backdrop, displayActualScreen);
+
+        // If a modal is active, hide it first, then show the requested screen
+        if (activeModalElement) {
+            hideModal(activeModalElement, activeModalElement.querySelector('.modal-content-box'),
+                      activeModalElement.querySelector('.modal-overlay:not(.modal-content-box)'),
+                      displayActualScreen);
         } else {
+            // If no modal is active, directly display the requested screen
             displayActualScreen();
         }
     }
+
 
     function resetGameAndPlay(showOnboarding = false) {
         currentStage = STAGES.SEEDING; currentMatchInStage = 0; nextStageWishes = []; voteCounts = {}; champion = null; isSponsoredInterstitialActive = false;
@@ -1126,8 +1181,7 @@
             document.body.classList.remove('bg-slate-50', 'bg-[#FAF8F6]');
             document.body.classList.add('bg-[#F0F4F8]');
         }
-        if (progressTextElement) progressTextElement.textContent = "Sponsorlu Etap";
-        if (progressBarFill) progressBarFill.style.width = `${(4 / 8) * 100}%`;
+        if (progressTextElement) progressTextElement.textContent = "Sponsorlu Etap"; if (progressBarFill) progressBarFill.style.width = `${(4 / 8) * 100}%`;
         
         const card1TitleEl = gameScreenCards[0].querySelector('.card-title');
         const card1DescEl = gameScreenCards[0].querySelector('.card-description');
@@ -1283,7 +1337,7 @@
     function handleCardSelection(selectedCardNode) {
         if (isSponsoredInterstitialActive) {
             if(sponsoredPopupTitleText) sponsoredPopupTitleText.textContent = SPONSORED_AD_DETAILS.title;
-            if(document.getElementById('sponsoredPopupImage')) loadImageAndSetSrc(document.getElementById('sponsoredPopupImage'), getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image), "Sponsorlu Reklam");
+            if(sponsoredPopupImage) loadImageAndSetSrc(sponsoredPopupImage, getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image), "Sponsorlu Reklam");
             if(sponsoredPopupDescriptionText) sponsoredPopupDescriptionText.textContent = SPONSORED_AD_DETAILS.description;
             if(sponsoredPopupLink) sponsoredPopupLink.href = SPONSORED_AD_DETAILS.link;
             showModal(screens.sponsoredPopup, sponsoredPopupContent); return;
@@ -1369,7 +1423,7 @@
         const championPercentage = totalSeedingVotes > 0 ? ((championVoteCount / totalSeedingVotes) * 100).toFixed(1) : "0.0";
 
         if(championTitleResults) championTitleResults.textContent = champion.title;
-        if(championInfoResults) championInfoResults.textContent = `Başlangıç oylarının %${championPercentage}'i ile şampiyon oldu!`;
+        if(championInfoResults) championInfoResults.textContent = `Kullanıcıların tercih etme oranı: %${championPercentage}`;
         loadImageAndSetSrc(championImageResults, getImageUrl(champion.imageSeed), champion.title);
 
         if(resultsCardContainer && championCardDisplay) {
@@ -1399,7 +1453,7 @@
                             <p class="text-white text-xl font-bold leading-tight">${w.title}</p>
                             <div class="flex items-center mt-1.5">
                                 <span class="material-icons text-red-400 mr-1" style="font-size: 18px;">favorite_border</span>
-                                <p class="text-white text-sm font-medium">Başlangıç oylarının %${wishPercentage}'ini aldı</p>
+                                <p class="text-white text-sm font-medium">Kullanıcıların tercih etme oranı: %${wishPercentage}'</p>
                             </div>
                         </div>
                     </div>`;
@@ -1518,14 +1572,16 @@
     if(navPlayButton) navPlayButton.addEventListener('click', (e) => {
         e.preventDefault();
         // Determine if we should resume current game or start new one
-        const isGameRelatedScreen = currentScreenId === 'game' ||
-                                    (screens[previousScreenId]?.id === 'gameScreen' &&
-                                     (currentScreenId === 'howToPlay' ||
-                                      currentScreenId === 'stageTransitionModal' ||
-                                      currentScreenId === 'winnerPopupScreen' ||
-                                      currentScreenId === 'sponsoredPopupScreen'));
+        // A game is considered "active" if it's the game screen, or if a modal/transition screen
+        // was shown *on top* of the game screen, and the game is not yet finished (no champion).
+        const isGameRelatedScreenActive = currentScreenId === 'game' ||
+                                        previousScreenId === 'game' ||
+                                        (currentScreenId === 'howToPlay' && previousScreenId === 'game') ||
+                                        (currentScreenId === 'stageTransitionModal' && previousScreenId === 'game') ||
+                                        (currentScreenId === 'sponsoredPopupScreen' && previousScreenId === 'game') ||
+                                        (currentScreenId === 'winnerPopupScreen' && previousScreenId === 'game');
 
-        if (isGameRelatedScreen && !champion) { // If game is active or was paused, and not finished
+        if (isGameRelatedScreenActive && !champion) { // If game is active or was paused, and not finished
             showScreen('game');
         } else { // Game is finished or navigated away, start new
             resetGameAndPlay();
@@ -1543,7 +1599,7 @@
         // İlk başta appContainer gizli kalsın, loading ekranı görünsün
         appContainer.classList.add('hidden-screen');
         loadingScreen.classList.remove('hidden');
-        updateBottomNav(); // İlk navigasyon görünürlüğünü ve padding'i güncelle
+        // Initial call to updateBottomNav is handled after preload completion.
     });
 
     // Update navigation visibility and padding on window resize
