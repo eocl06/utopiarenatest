@@ -11,12 +11,12 @@
     <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABFSURBVDhPYxgFo2AUjIJRMDIgBaMWAMGWg40CGGARKIcFFhAFqiBELKwL0RAUEpZSYYAAKUmZASwYGLAESJgRKMIAAGVyBqwSAFXRAAAAAElFTkSuQmCC" type="image/x-icon"/>
     <style>
         body {
-            min-height: 100dvh; /* Prefer dvh for dynamic viewport */
+            min-height: 100dvh; /* Prefer dvh for dynamic viewport, but consider fallback */
             min-height: 100vh; /* Fallback for browsers not fully supporting dvh */
             font-family: 'Lexend', "Manrope", "Noto Sans", sans-serif;
-            overscroll-behavior-y: contain; /* Prevent bounce scroll */
+            overscroll-behavior-y: contain;
             margin: 0;
-            /* overflow-y: hidden; Removed from body. Each screen manages its own scroll. */
+            overflow-y: hidden; /* Allow y-scroll only if explicitly needed by a child */
             overflow-x: hidden; /* Prevent horizontal scroll */
             position: relative; /* For ensuring fixed elements are relative to body */
         }
@@ -25,17 +25,20 @@
             display: none !important;
         }
 
-        .screen-content {
-            display: flex; /* Make each screen a flex container */
-            flex-direction: column; /* Stack children vertically */
-            height: 100dvh; /* Make each screen fill the viewport */
-            height: 100vh; /* Fallback */
-            overflow: hidden; /* Prevent scrolling on the screen itself, let child main content manage it */
-            padding: 0;
-            margin: 0;
+       .screen-content {
+    height: 100dvh;
+    overflow: hidden; /* scroll'u burada da engelle */
+    padding: 0; /* boşlukları sıfırla */
+    margin: 0;
+}
+
+        /* Adjust padding for screens that sit above the bottom nav */
+        #gameScreen, #resultsScreen, #finishScreen, #howToPlayScreen {
+            /* padding-bottom is now handled dynamically by JS for main content areas */
+            /* This ensures better compatibility with iOS address bar */
         }
 
-        /* Adjust main content areas within screens to properly handle height and scrolling */
+        /* Adjust main content areas within screens to properly handle height */
         #gameScreen > div:nth-child(2), /* The main content flex-1 div in game screen */
         #resultsScreen main,
         #finishScreen .overflow-y-auto,
@@ -233,9 +236,6 @@
             justify-content: center;
             width: 100%;
             box-sizing: border-box;
-            /* Ensure this div grows to take available space and scrolls its content */
-            flex: 1;
-            min-height: 0; /* Important for flex items with overflow */
         }
         #gameScreen .flex-col.items-center { /* flex flex-col items-center @md:flex-row ... */
             width: 100%;
@@ -288,8 +288,6 @@
         /* Results Screen specific layout */
         #resultsScreen main {
             padding: 0 1rem; /* Consistent padding */
-            flex: 1; /* Ensure main takes available space */
-            min-height: 0; /* For flex items with overflow */
         }
         #resultsCardContainer {
             display: flex;
@@ -333,9 +331,6 @@
 
         /* Finish Screen specific layout */
         #finishScreen .flex-col.flex-1.min-h-0 {
-            /* This is the main content area for finish screen */
-            flex: 1;
-            min-height: 0; /* Important for flex items with overflow */
             /* padding-bottom is handled by JS based on bottom nav */
         }
         #finishScreen .flex.overflow-x-auto {
@@ -364,6 +359,15 @@
         #onboardingHowToPlayContent ol li {
             margin-bottom: 0.5rem; /* Space between list items */
         }
+
+        /* Spinner veya yükleniyor efekti için */
+        .image-loading {
+            background-color: #e0e0e0; /* Gri bir arka plan */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" stroke="#cccccc" stroke-width="4" fill="none"/><path d="M25 5 A20 20 0 0 1 45 25" stroke="#999999" stroke-width="4" fill="none" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></path></svg>'); /* Küçük bir SVG spinner */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 30px 30px;
+        }
     </style>
 </head>
 <body class="bg-[#FAF8F6]">
@@ -385,14 +389,14 @@
             </div>
         </div>
 
-        <div id="gameScreen" class="hidden-screen screen-content relative bg-slate-50">
+        <div id="gameScreen" class="hidden-screen screen-content relative flex flex-col bg-slate-50">
             <div class="sticky top-0 z-20 bg-slate-50 shadow-sm game-header-bar">
                 <p id="progressTextElement" class="text-[#0d131b] text-sm font-medium leading-normal truncate pr-8">Eleme: 1/8</p>
                 <div class="h-1.5 rounded-full bg-[#cfd9e7] relative overflow-hidden mt-1">
                     <div id="progressBarFill" class="h-full rounded-full bg-[#428aef]" style="width: 0%;"></div>
                 </div>
             </div>
-            <div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center">
+<div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center @md:flex-row @md:justify-center @md:items-center w-full">
                     <div class="card w-full max-w-md @md:max-w-sm bg-white rounded-xl shadow-xl overflow-hidden relative">
                         <div class="confetti-burst hidden"></div>
@@ -463,7 +467,7 @@
             </div>
         </div>
 
-        <div id="resultsScreen" class="hidden-screen screen-content relative bg-slate-50">
+        <div id="resultsScreen" class="hidden-screen screen-content relative flex flex-col bg-slate-50">
             <div class="flex flex-col flex-1 min-h-0">
                 <header class="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-sm shadow-sm game-header-bar">
                     <div class="flex items-center justify-between relative">
@@ -494,7 +498,7 @@
             </div>
         </div>
 
-        <div id="finishScreen" class="hidden-screen screen-content relative bg-slate-50">
+        <div id="finishScreen" class="hidden-screen screen-content relative flex flex-col bg-slate-50">
             <div class="flex flex-col flex-1 min-h-0">
                 <header class="flex items-center bg-slate-50 p-3 justify-end sticky top-0 z-10 shadow-sm game-header-bar"></header>
                 <div class="overflow-y-auto flex-1 min-h-0">
@@ -519,7 +523,7 @@
             </div>
         </div>
 
-        <div id="howToPlayScreen" class="hidden-screen screen-content relative bg-slate-50 p-0">
+        <div id="howToPlayScreen" class="hidden-screen screen-content relative flex flex-col bg-slate-50 p-0">
             <div class="flex flex-col flex-1 min-h-0">
                 <header class="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-sm py-2 px-4 shadow-sm game-header-bar">
                     <div class="flex items-center justify-between">
@@ -734,9 +738,10 @@
 
         // Initial load / Start Screen
         if (screenId === 'start' || screenId === 'onboardingHowToPlayModal') {
-            // Preload images for the first match immediately
-            const initialWishes = wishes.slice(0, 2);
-            initialWishes.forEach(w => {
+            // Preload images for the first 8 matches (all seeding wishes if total wishes are 16)
+            // Bu, Eleme Turu'ndaki tüm 16 haberin görselini önceden yükler.
+            const initialWishesToPreload = wishes.slice(0, 16); // Varsayılan olarak ilk 16 haberi yükle
+            initialWishesToPreload.forEach(w => {
                 imagesToLoad.push(getImageUrl(w.imageSeed, 600, 400));
             });
             // Also preload sponsored ad images if relevant
@@ -744,9 +749,11 @@
         }
         // In-game screen: preload next few matches
         else if (screenId === 'game') {
-            // Preload next 2-4 matches (4-8 images) for smooth transitions
+            // Preload next 4 matches (8 images) for smooth transitions
             const nextMatchesStartIndex = currentMatchInStage * 2 + 2;
-            const nextWishes = wishesForCurrentStage.slice(nextMatchesStartIndex, nextMatchesStartIndex + 8); // Preload up to next 4 matches
+            // Eleme turu için sonraki 4 maçı, diğer turlar için sonraki 2 maçı ön yükle
+            const preloadCount = (currentStage === STAGES.SEEDING) ? 8 : 4; // 4 maç (8 haber) veya 2 maç (4 haber)
+            const nextWishes = wishesForCurrentStage.slice(nextMatchesStartIndex, nextMatchesStartIndex + preloadCount);
 
             nextWishes.forEach(w => {
                 imagesToLoad.push(getImageUrl(w.imageSeed, 600, 400));
@@ -787,18 +794,21 @@
     function loadImageAndSetSrc(imgElement, imageUrl, altText, errorPlaceholderUrl = null) {
         if (!imgElement) return;
 
-        // Set src to empty to show blank/default background initially
-        imgElement.src = '';
+        // Görsel yüklenirken bir yükleniyor sınıfı ekleyin
+        imgElement.classList.add('image-loading');
+        imgElement.src = ''; // Clear existing src to prevent old image from showing
         imgElement.alt = altText || '';
 
-        // Check if image is already in cache (preloaded)
-        if (preloadedImagesCache[imageUrl] === true) { // Explicitly check for true (loaded successfully)
+        // Check if image is already in cache
+        if (preloadedImagesCache[imageUrl] === true) {
             imgElement.src = imageUrl;
-        } else if (preloadedImagesCache[imageUrl] === false) { // Explicitly check for false (failed previously)
-            imgElement.src = errorPlaceholderUrl || getImageUrl('error_placeholder', 600, 400); // Use a generic error placeholder
+            imgElement.alt = altText;
+            imgElement.classList.remove('image-loading'); // Remove spinner once loaded
+        } else if (preloadedImagesCache[imageUrl] === false) { // Previously failed to load
+            imgElement.src = errorPlaceholderUrl || 'https://via.placeholder.com/600x400?text=Görsel+Yüklenemedi'; // Use a generic error placeholder
             imgElement.alt = "Görsel yüklenemedi.";
+            imgElement.classList.remove('image-loading'); // Remove spinner
         } else {
-            // Image not in cache or still loading, create new Image object to manage loading
             const img = new Image();
             img.src = imageUrl;
             preloadedImagesCache[imageUrl] = 'loading'; // Mark as loading
@@ -806,13 +816,15 @@
             img.onload = () => {
                 imgElement.src = imageUrl;
                 imgElement.alt = altText;
-                preloadedImagesCache[imageUrl] = true; // Mark as loaded
+                imgElement.classList.remove('image-loading'); // Remove spinner on successful load
+                preloadedImagesCache[imageUrl] = true;
             };
             img.onerror = () => {
                 console.warn(`Failed to load image: ${imageUrl}`);
-                imgElement.src = errorPlaceholderUrl || getImageUrl('error_placeholder', 600, 400); // Use a generic error placeholder
+                imgElement.src = errorPlaceholderUrl || 'https://via.placeholder.com/600x400?text=Görsel+Yüklenemedi'; // Use a generic error placeholder
                 imgElement.alt = "Görsel yüklenemedi.";
-                preloadedImagesCache[imageUrl] = false; // Mark as failed
+                imgElement.classList.remove('image-loading'); // Remove spinner on error
+                preloadedImagesCache[imageUrl] = false;
             };
         }
     }
@@ -826,9 +838,9 @@
         if(navResultsButton) navResultsButton.classList.remove('active', 'text-blue-600');
 
         const isOverlayActive = (onboardingModal && !onboardingModal.classList.contains('hidden-screen')) ||
-                                (screens.winnerPopup && !screens.winnerPopup.classList.contains('hidden-screen')) ||
-                                (screens.sponsoredPopup && !screens.sponsoredPopup.classList.contains('hidden-screen')) ||
-                                (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen'));
+                                 (screens.winnerPopup && !screens.winnerPopup.classList.contains('hidden-screen')) ||
+                                 (screens.sponsoredPopup && !screens.sponsoredPopup.classList.contains('hidden-screen')) ||
+                                 (stageTransitionModal && !stageTransitionModal.classList.contains('hidden-screen'));
 
         const navHeightWithSpace = '70px'; // Approx height of bottom nav + some buffer
         const screensThatNeedNavPadding = ['game', 'results', 'finish', 'howToPlay'];
@@ -1390,11 +1402,11 @@
         e.preventDefault();
         // Determine if we should resume current game or start new one
         const isGameRelatedScreen = currentScreenId === 'game' ||
-                                   (screens[previousScreenId]?.id === 'gameScreen' &&
-                                    (currentScreenId === 'howToPlay' ||
-                                     currentScreenId === 'stageTransitionModal' ||
-                                     currentScreenId === 'winnerPopupScreen' ||
-                                     currentScreenId === 'sponsoredPopupScreen'));
+                                     (screens[previousScreenId]?.id === 'gameScreen' &&
+                                      (currentScreenId === 'howToPlay' ||
+                                       currentScreenId === 'stageTransitionModal' ||
+                                       currentScreenId === 'winnerPopupScreen' ||
+                                       currentScreenId === 'sponsoredPopupScreen'));
 
         if (isGameRelatedScreen && !champion) { // If game is active or was paused, and not finished
             showScreen('game');
