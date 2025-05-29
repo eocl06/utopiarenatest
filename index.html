@@ -25,21 +25,12 @@
             display: none !important;
         }
 
-        .screen-content {
-            box-sizing: border-box;
-            width: 100%; /* Ensure full width */
-            height: 100dvh; /* Prefer dvh */
-            height: 100vh; /* Fallback for vh */
-            overflow-y: auto; /* Allow vertical scrolling within screens if content exceeds height */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            display: flex; /* Ensure flex context for internal layout */
-            flex-direction: column; /* Stack content vertically */
-            position: absolute; /* Position screens absolutely to manage stacking */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
+       .screen-content {
+    height: 100dvh;
+    overflow: hidden; /* scroll'u burada da engelle */
+    padding: 0; /* boşlukları sıfırla */
+    margin: 0;
+}
 
         /* Adjust padding for screens that sit above the bottom nav */
         #gameScreen, #resultsScreen, #finishScreen, #howToPlayScreen {
@@ -396,7 +387,7 @@
                     <div id="progressBarFill" class="h-full rounded-full bg-[#428aef]" style="width: 0%;"></div>
                 </div>
             </div>
-            <div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center transform translate-y-2 sm:translate-y-4">
+<div class="flex-1 min-h-0 px-3 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center @md:flex-row @md:justify-center @md:items-center w-full">
                     <div class="card w-full max-w-md @md:max-w-sm bg-white rounded-xl shadow-xl overflow-hidden relative">
                         <div class="confetti-burst hidden"></div>
