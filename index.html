@@ -773,9 +773,12 @@
     const SPONSORED_AD_DETAILS = {
         title: "Artık ikisi de ütopya değil!",
         description: "Samsung Bespoke AI Buzdolabı ile geleceğin teknolojileri evinize geldi.",
-        image: "https://i.ibb.co/Kj70CdwF/image.png", imageSeed: null,
+        image: "https://i.ibb.co/Kj70CdwF/image.png", imageSeed: null, // Note: imageSeed is explicitly null in original, but the image URL is given in 'image'
         link: "https://www.samsung.com/tr/home-appliances/bespoke-home/?gad_source=1&gad_campaignid=21450180449&gbraid=0AAAAAD2gkfW5E2S3kMwBuWPlYFKrdtHfP&gclid=CjwKCAjwi-DBBhA5EiwAXOHsGUZ_AI9UaOv6drI3rnMC15Ak3KhYxPdW7ZRU-lbD0FWs15154af7BoCwcQQAvD_BwE&gclsrc=aw.ds"
     };
+    const sponsoredCardContent1 = { id: 'sp_card_1', title: "Ne Pişireceğinize Artık Buzdolabımız Karar Verebilecek!", description: "AI destekli buzdolabı, içerikteki malzemelere göre her gün yeni tarif öneriyor.", imageSeed: "https://i.ibb.co/zhQtLZp2/10.png" };
+    const sponsoredCardContent2 = { id: 'sp_card_2', title: "İçindekileri Tanıyan ve Alışveriş Listesi Hazırlayan Buzdolabı duyuruldu! ", description: "Yapay zekâlı buzdolabı, eksikleri algılayıp ihtiyacın olan ürünleri liste halinde bildiriyor.", imageSeed: "https://i.ibb.co/sphC2bqB/8.png" };
+
 
     const wishes = [
         { id:1, title: "İzmir Belediyesi: Gece 00:00–05:00 Arası Ücretsiz Taksi Hizmeti Başladı", description: "Gece çalışan, okuyan ya da çıkan herkese bir tuşla güvenli ulaşım imkanı sunuluyor. ", imageSeed: "https://i.ibb.co/zhyF4pVq/Ads-z-tasar-m-4.png" },
@@ -842,8 +845,11 @@
 
 
         imageUrls.forEach(imageUrl => {
-            if (preloadedImagesCache[imageUrl] === true) { // Zaten önceden yüklenmişse
-                checkCompletion();
+            // If already loaded or loading, don't try again unless it failed
+            if (preloadedImagesCache[imageUrl] === true || preloadedImagesCache[imageUrl] === 'loading') {
+                if (preloadedImagesCache[imageUrl] === true) { // If already truly loaded
+                    checkCompletion();
+                }
                 return;
             }
 
@@ -873,23 +879,21 @@
             imagesToLoad.push(getImageUrl(w.imageSeed));
         });
 
-        // Sponsorlu reklam görselleri
-        imagesToLoad.push(getImageUrl(SPONSORED_AD_DETAILS.imageSeed || SPONSORED_AD_DETAILS.image));
-        const sponsoredCardContent1 = { id: 'sp_card_1', title: "Ne Pişireceğinize Artık Buzdolabımız Karar Verebilecek!", description: "AI destekli buzdolabı, içerikteki malzemelere göre her gün yeni tarif öneriyor.", imageSeed: "https://i.ibb.co/zhQtLZp2/10.png" };
-        const sponsoredCardContent2 = { id: 'sp_card_2', title: "İçindekileri Tanıyan ve Alışveriş Listesi Hazırlayan Buzdolabı duyuruldu! ", description: "Yapay zekâlı buzdolabı, eksikleri algılayıp ihtiyacın olan ürünleri liste halinde bildiriyor.", imageSeed: "https://i.ibb.co/sphC2bqB/8.png" };
-        imagesToLoad.push(getImageUrl(sponsoredCardContent1.imageSeed));
-        imagesToLoad.push(getImageUrl(sponsoredCardContent2.imageSeed));
+        // Sponsorlu reklam görselleri ve kart içerikleri
+        if (SPONSORED_AD_DETAILS.image) imagesToLoad.push(getImageUrl(SPONSORED_AD_DETAILS.image));
+        if (sponsoredCardContent1.imageSeed) imagesToLoad.push(getImageUrl(sponsoredCardContent1.imageSeed));
+        if (sponsoredCardContent2.imageSeed) imagesToLoad.push(getImageUrl(sponsoredCardContent2.imageSeed));
 
         // Sonuç ekranı ve "Diğer Popüler Hayaller" için sabit görseller
         const fixedOtherWishIds = [8, 13, 4, 14];
         fixedOtherWishIds.forEach(id => {
             const wish = wishes.find(w => w.id === id);
-            if (wish) { // champion can be null at this point, so no need to filter by champion.id
+            if (wish) {
                 imagesToLoad.push(getImageUrl(wish.imageSeed));
             }
         });
 
-        imagesToLoad = [...new Set(imagesToLoad)]; // Tekrarları kaldır
+        imagesToLoad = [...new Set(imagesToLoad)]; // Remove duplicates
 
         // Preload tamamlandığında loading ekranını gizle ve uygulamayı başlat
         preloadImages(imagesToLoad, () => {
@@ -1124,8 +1128,6 @@
         }
         if (progressTextElement) progressTextElement.textContent = "Sponsorlu Etap";
         if (progressBarFill) progressBarFill.style.width = `${(4 / 8) * 100}%`;
-        const sponsoredCardContent1 = { id: 'sp_card_1', title: "Ne Pişireceğinize Artık Buzdolabımız Karar Verebilecek!", description: "AI destekli buzdolabı, içerikteki malzemelere göre her gün yeni tarif öneriyor.", imageSeed: "https://i.ibb.co/zhQtLZp2/10.png" };
-        const sponsoredCardContent2 = { id: 'sp_card_2', title: "İçindekileri Tanıyan ve Alışveriş Listesi Hazırlayan Buzdolabı duyuruldu! ", description: "Yapay zekâlı buzdolabı, eksikleri algılayıp ihtiyacın olan ürünleri liste halinde bildiriyor.", imageSeed: "https://i.ibb.co/sphC2bqB/8.png" };
         
         const card1TitleEl = gameScreenCards[0].querySelector('.card-title');
         const card1DescEl = gameScreenCards[0].querySelector('.card-description');
